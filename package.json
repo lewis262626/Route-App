@@ -19,6 +19,7 @@
     "serverless-offline": "^5.3.3"
   },
   "dependencies": {
+    "geolib": "^3.2.1",
     "uuid": "^3.4.0"
   }
 }
