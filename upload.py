@@ -1,4 +1,3 @@
-
 #
 #  Copyright 2010-2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
@@ -17,6 +16,7 @@ import boto3
 import json
 import decimal
 import six
+from decimal import Decimal
 
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 
@@ -24,7 +24,9 @@ table = dynamodb.Table('airports')
 
 def empty2string(obj):
     for k, v in six.iteritems(obj):
-        if v == '':
+        if k == "runway_length" and v is None:
+            obj[k] = 0
+        elif v == '':
             obj[k] = 'NONE'
     return obj
 
@@ -42,12 +44,12 @@ with open("airports.json") as json_file:
         tz = airport['tz']
         type_airport = airport['type']
         icao = airport['icao']
-        runway_length = airport['runway_length']
+        runway_length = Decimal(airport['runway_length'])
         elev = airport['elev']
         direct_flights = airport['direct_flights']
         carriers = airport['carriers']
 
-        print("Adding airport:", name, icao)
+        print("Adding airport:", name, code)
 
 
         table.put_item(
