@@ -1,14 +1,26 @@
-export const hello = async (event, context) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: `Go Serverless v1.0! ${(await message({ time: 1, copy: 'Your function executed successfully!'}))}`,
-    }),
-  };
-};
+import * as dynamoDbLib from "./libs/dynamo-lib";
+import { success, failure } from "./libs/response-lib";
 
-const message = ({ time, ...rest }) => new Promise((resolve, reject) =>
-  setTimeout(() => {
-    resolve(`${rest.copy} (with a delay)`);
-  }, time * 1000)
-);
+export const hello = async (event, context) => {
+  const data = JSON.parse(event.body);
+
+  const params = {
+    TableName: process.env.tableName,
+
+    Key: {
+      icao: data.icao,
+    }
+  };
+
+  try {
+    const results = await dynamoDbLib.call("get", params);
+
+    if (results.Item) {
+      return success(results.Item);
+    } else {
+      return failure({ status: false, error: "item not found"});
+    }
+  } catch (e) {
+    return failure({ status: false});
+  }
+};
