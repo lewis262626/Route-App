@@ -10,7 +10,7 @@ export const hello = async (event, context) => {
 
     FilterExpression: "runway_length >= :max_length and type_airport = :type and country = :country",
     ExpressionAttributeValues: {
-      ":max_length": 7500,
+      ":max_length": 7000,
       ":type": "Airports",
       ":country": data.country,
     }
@@ -39,7 +39,7 @@ export const hello = async (event, context) => {
         { latitude: parseFloat(airports[j].lat), longitude: parseFloat(airports[j].lon) }
       );
 
-      if (distance/1000 > 100 && distance/1000 < 300) {
+      if (distance/1000 >= 0.8*data.distance && distance/1000 <= data.distance ) {
         let pair = { airport1: i, airport2: j, distance: distance };
         lst.push(pair);
       }

@@ -12,6 +12,12 @@ plugins:
 
 provider:
   name: aws
+  apiKeys:
+    - firstkey
+  usagePlan:
+    throttle:
+      burstLimit: 100
+      rateLimit: 200
   runtime: nodejs10.x
   stage: dev
   region: us-east-1
@@ -50,3 +56,4 @@ functions:
           path: route
           cors: true
           method: post
+          private: true
