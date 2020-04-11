@@ -8,6 +8,7 @@ with open("airports.json") as json_file:
         if country not in countries:
             countries.append(country)
 
+countries.sort()
 print('[')
 for country in countries:
     print(r'"{}"'.format(country) + ",")
