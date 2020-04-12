@@ -4,6 +4,7 @@ import { getDistance } from 'geolib';
 
 export const hello = async (event, context) => {
   const data = JSON.parse(event.body);
+  console.log(data.country);
 
   const params = {
     TableName: process.env.tableName,

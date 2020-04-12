@@ -9,6 +9,7 @@ plugins:
   - serverless-bundle # Package our functions with Webpack
   - serverless-offline
   - serverless-dotenv-plugin # Load .env as environment variables
+  - serverless-api-compression # for api compression
 
 provider:
   name: aws
@@ -47,6 +48,11 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-east-1:*:*"
+
+custom:
+    stage: ${opt:stage, self:provider.stage}
+    contentEncoding:
+      contentCompression: 1024
 
 functions:
   hello:
