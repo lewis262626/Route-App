@@ -48,7 +48,7 @@ export const hello = async (event, context) => {
   }
 
   if (lst.length == 0) {
-    return failure({ status: false, error: "No airpots found" });
+    return failure({ status: false, error: "No airports found" });
   }
 
   let randomNum = Math.floor(Math.random() * lst.length);
