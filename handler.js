@@ -33,12 +33,18 @@ export const hello = async (event, context) => {
 
   let i, j;
   let lst = [];
+  let backup_lst = [];
   for (i = 0; i < airports.length; i++) {
     for (j = 0; j < airports.length; j++) {
       let distance = getDistance(
         { latitude: parseFloat(airports[i].lat), longitude: parseFloat(airports[i].lon) },
         { latitude: parseFloat(airports[j].lat), longitude: parseFloat(airports[j].lon) }
       );
+
+      if (distance/1000 >= 200) {
+        let pair = { airport1: i, airport2: j, distance: distance };
+        backup_lst.push(pair);
+      }
 
       if (distance/1000 >= 0.8*data.distance && distance/1000 <= data.distance ) {
         let pair = { airport1: i, airport2: j, distance: distance };
@@ -48,7 +54,11 @@ export const hello = async (event, context) => {
   }
 
   if (lst.length == 0) {
-    return failure({ status: false, error: "No airports found" });
+    if (backup_lst.length == 0) {
+      return failure({ status: false, error: "No airports found" });
+    } else {
+      lst = backup_lst;
+    }
   }
 
   let randomNum = Math.floor(Math.random() * lst.length);
