@@ -40,7 +40,7 @@ export const hello = async (event, context) => {
         { latitude: parseFloat(airports[j].lat), longitude: parseFloat(airports[j].lon) }
       );
 
-      if (distance/1000 >= 200 && distance/1000 <= data.distance ) {
+      if (distance/1000 >= 0.8*data.distance && distance/1000 <= data.distance ) {
         let pair = { airport1: i, airport2: j, distance: distance };
         lst.push(pair);
       }
